@@ -1,12 +1,11 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using c_sharp_appium_specflow.Pages;
+﻿using c_sharp_appium_specflow.Pages;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.Enums;
 using OpenQA.Selenium.Support.UI;
 using TechTalk.SpecFlow;
+using NUnit.Framework;
 
 namespace c_sharp_appium_specflow.Tests
 {
@@ -14,13 +13,13 @@ namespace c_sharp_appium_specflow.Tests
     public class HomePageTests
 	{
         private readonly HomePage homePage;
-
+        public AppiumDriver<IWebElement> Driver;
+        public WebDriverWait wait;
         public HomePageTests()
 		{
             homePage = new HomePage();
         }
-        public AppiumDriver<IWebElement> Driver;
-        public WebDriverWait wait;
+
 
         private byte[] initialScreenshot;
 
@@ -28,7 +27,7 @@ namespace c_sharp_appium_specflow.Tests
         public void Setup()
         {
             string appiumServerUrl = "http://localhost:4723/wd/hub";
-            string deviceName = "Pixel 3 API 31";
+            string deviceName = "Pixel 4";
 
             // Initialize the Android driver with desired capabilities
             var androidOptions = new AppiumOptions();
@@ -60,10 +59,8 @@ namespace c_sharp_appium_specflow.Tests
         [When(@"I click on COLOR")]
         public void WhenIClickOnCOLOR()
         {
-            // Capture the initial screenshot of the TextView element
             initialScreenshot = ((ITakesScreenshot)Driver).GetScreenshot().AsByteArray;
 
-            // Perform the action that causes the color change
             homePage.ColorButton.Click();
         }
 
@@ -77,7 +74,7 @@ namespace c_sharp_appium_specflow.Tests
             bool colorChanged = homePage.CompareScreenshots(initialScreenshot, finalScreenshot);
 
             // Assert or perform further actions based on the color change result
-            Assert.IsTrue(colorChanged, "Color did not change");
+            Assert.That(colorChanged, Is.True, "Color did not change");
         }
 
 
