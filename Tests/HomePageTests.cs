@@ -19,7 +19,7 @@ namespace c_sharp_appium_specflow.Tests
 		{
             homePage = new HomePage();
         }
-        public AppiumDriver<IWebElement> driver;
+        public AppiumDriver<IWebElement> Driver;
         public WebDriverWait wait;
 
         private byte[] initialScreenshot;
@@ -37,23 +37,23 @@ namespace c_sharp_appium_specflow.Tests
             androidOptions.AddAdditionalCapability(MobileCapabilityType.DeviceName, deviceName);
             androidOptions.AddAdditionalCapability("appium:appPackage", "com.lambdatest.proverbial");
             androidOptions.AddAdditionalCapability("appium:appActivity", "com.lambdatest.proverbial.MainActivity");
-            driver = new AndroidDriver<IWebElement>(new Uri(appiumServerUrl), androidOptions);
+            Driver = new AndroidDriver<IWebElement>(new Uri(appiumServerUrl), androidOptions);
 
-            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
         }
 
         [AfterScenario]
         public void TearDown()
         {
             // Close the driver and perform any necessary cleanup
-            driver?.Quit();
+            Driver?.Quit();
         }
 
 
         [Given(@"I am on the home screen")]
         public void GivenIAmOnTheHomeScreen()
         {
-            driver.LaunchApp();
+            Driver.LaunchApp();
         }
 
 
@@ -61,7 +61,7 @@ namespace c_sharp_appium_specflow.Tests
         public void WhenIClickOnCOLOR()
         {
             // Capture the initial screenshot of the TextView element
-            initialScreenshot = ((ITakesScreenshot)driver).GetScreenshot().AsByteArray;
+            initialScreenshot = ((ITakesScreenshot)Driver).GetScreenshot().AsByteArray;
 
             // Perform the action that causes the color change
             homePage.ColorButton.Click();
@@ -71,7 +71,7 @@ namespace c_sharp_appium_specflow.Tests
         public void ThenIShouldSeeAChangeInColor()
         {
             // Capture the final screenshot of the TextView element
-            byte[] finalScreenshot = ((ITakesScreenshot)driver).GetScreenshot().AsByteArray;
+            byte[] finalScreenshot = ((ITakesScreenshot)Driver).GetScreenshot().AsByteArray;
 
             // Compare the initial and final screenshots
             bool colorChanged = homePage.CompareScreenshots(initialScreenshot, finalScreenshot);
@@ -92,9 +92,9 @@ namespace c_sharp_appium_specflow.Tests
         public void ThenIShouldReceiveANotificationOnTheDevice()
         {
             //Open the notification shade using an ADB command
-            driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "expand-notifications" } });
+            Driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "expand-notifications" } });
 
-            driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "collapse" } });
+            Driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "collapse" } });
 
             // Verify the Notification should show
             Assert.That(homePage.IsNotificationDisplayed, "Push notification not showing");
@@ -161,7 +161,7 @@ namespace c_sharp_appium_specflow.Tests
             catch (Exception) { }
 
             // Capture a screenshot
-            Screenshot screenshot = driver.GetScreenshot();
+            Screenshot screenshot = Driver.GetScreenshot();
 
             // Generate the screenshot file path
             string folderPath = "screenshots";
