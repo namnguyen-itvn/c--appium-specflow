@@ -13,53 +13,27 @@ namespace c_sharp_appium_specflow
     public class HomeScreenTests
     {
         private readonly HomePage homePage;
-        public AppiumDriver<IWebElement> Driver;
-        public WebDriverWait wait;
+        //public AppiumDriver<IWebElement> Driver;
+        //public WebDriverWait wait;
         public HomeScreenTests()
         {
             homePage = new HomePage();
         }
 
-
         private byte[] initialScreenshot;
-
-        [BeforeScenario]
-        public void Setup()
-        {
-            string appiumServerUrl = "http://localhost:4723/wd/hub";
-            string deviceName = "Pixel 4";
-
-            // Initialize the Android driver with desired capabilities
-            var androidOptions = new AppiumOptions();
-            androidOptions = new AppiumOptions();
-            androidOptions.AddAdditionalCapability(MobileCapabilityType.PlatformName, MobilePlatform.Android);
-            androidOptions.AddAdditionalCapability(MobileCapabilityType.DeviceName, deviceName);
-            androidOptions.AddAdditionalCapability("appium:appPackage", "com.lambdatest.proverbial");
-            androidOptions.AddAdditionalCapability("appium:appActivity", "com.lambdatest.proverbial.MainActivity");
-            Driver = new AndroidDriver<IWebElement>(new Uri(appiumServerUrl), androidOptions);
-
-            wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
-        }
-
-        [AfterScenario]
-        public void TearDown()
-        {
-            // Close the driver and perform any necessary cleanup
-            Driver?.Quit();
-        }
 
 
         [Given(@"I am on the home screen")]
         public void GivenIAmOnTheHomeScreen()
         {
-            Driver.LaunchApp();
+            homePage.Driver.LaunchApp();
         }
 
 
         [When(@"I click on COLOR")]
         public void WhenIClickOnCOLOR()
         {
-            initialScreenshot = ((ITakesScreenshot)Driver).GetScreenshot().AsByteArray;
+            initialScreenshot = ((ITakesScreenshot)homePage.Driver).GetScreenshot().AsByteArray;
 
             homePage.ColorButton.Click();
         }
@@ -68,7 +42,7 @@ namespace c_sharp_appium_specflow
         public void ThenIShouldSeeAChangeInColor()
         {
             // Capture the final screenshot of the TextView element
-            byte[] finalScreenshot = ((ITakesScreenshot)Driver).GetScreenshot().AsByteArray;
+            byte[] finalScreenshot = ((ITakesScreenshot)homePage.Driver).GetScreenshot().AsByteArray;
 
             // Compare the initial and final screenshots
             bool colorChanged = homePage.CompareScreenshots(initialScreenshot, finalScreenshot);
@@ -89,9 +63,9 @@ namespace c_sharp_appium_specflow
         public void ThenIShouldReceiveANotificationOnTheDevice()
         {
             //Open the notification shade using an ADB command
-            Driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "expand-notifications" } });
+            homePage.Driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "expand-notifications" } });
 
-            Driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "collapse" } });
+            homePage.Driver.ExecuteScript("mobile:shell", new Dictionary<string, object> { ["command"] = "cmd", ["args"] = new[] { "statusbar", "collapse" } });
 
             // Verify the Notification should show
             Assert.That(homePage.IsNotificationDisplayed, "Push notification not showing");
@@ -141,24 +115,24 @@ namespace c_sharp_appium_specflow
         public void ThenIStartTheSpeedTestFromTheSpeedTestPage()
         {
             By startSpeedTestLocator = By.XPath("//*[contains(@text,'start speed test')]");
-            wait.Until(ExpectedConditions.ElementIsVisible(startSpeedTestLocator)).Click();
+            homePage.wait.Until(ExpectedConditions.ElementIsVisible(startSpeedTestLocator)).Click();
         }
 
         [Then(@"I capture the upload/download speed")]
         public void ThenICaptureTheUploadDownloadSpeed()
         {
-            wait.Timeout = TimeSpan.FromSeconds(30);
+            homePage.wait.Timeout = TimeSpan.FromSeconds(30);
 
             By testAgainLocator = By.XPath("//*[contains(@text, 'Test Again')]");
             IWebElement testAgainElement = null;
             try
             {
-                testAgainElement = wait.Until(ExpectedConditions.ElementIsVisible(testAgainLocator));
+                testAgainElement = homePage.wait.Until(ExpectedConditions.ElementIsVisible(testAgainLocator));
             }
             catch (Exception) { }
 
             // Capture a screenshot
-            Screenshot screenshot = Driver.GetScreenshot();
+            Screenshot screenshot = homePage.Driver.GetScreenshot();
 
             // Generate the screenshot file path
             string folderPath = "screenshots";
