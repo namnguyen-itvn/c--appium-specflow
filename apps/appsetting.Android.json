@@ -1,0 +1,5 @@
+﻿{
+  "PlatformName": "Android",
+  "DeviceName": "Google Pixel 3",
+  "App": @"/Users/namnguyen/c--appium-specflow/c-sharp-appium-specflow/apps/AndroidTestApp.apk"
+}
