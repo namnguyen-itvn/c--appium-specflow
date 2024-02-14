@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Support.UI;
 
-namespace c_sharp_appium_specflow.Pages
+namespace c_sharp_appium_specflow
 {
     public class HomePage : BasePage
     {

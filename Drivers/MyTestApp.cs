@@ -5,7 +5,7 @@ using OpenQA.Selenium.Appium.Enums;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium.Interfaces;
 
-namespace c_sharp_appium_specflow.Drivers
+namespace c_sharp_appium_specflow
 {
 	class MyTestApp
 	{

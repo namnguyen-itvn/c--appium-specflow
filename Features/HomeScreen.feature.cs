@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace c_sharp_appium_specflow.Features
+namespace c_sharp_appium_specflow
 {
     using TechTalk.SpecFlow;
     using System;

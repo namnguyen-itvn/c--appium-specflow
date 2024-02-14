@@ -1,4 +1,4 @@
-﻿using c_sharp_appium_specflow.Pages;
+﻿using c_sharp_appium_specflow;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
@@ -7,16 +7,16 @@ using OpenQA.Selenium.Support.UI;
 using TechTalk.SpecFlow;
 using NUnit.Framework;
 
-namespace c_sharp_appium_specflow.Tests
+namespace c_sharp_appium_specflow
 {
     [Binding]
-    public class HomePageTests
-	{
+    public class HomeScreenTests
+    {
         private readonly HomePage homePage;
         public AppiumDriver<IWebElement> Driver;
         public WebDriverWait wait;
-        public HomePageTests()
-		{
+        public HomeScreenTests()
+        {
             homePage = new HomePage();
         }
 
@@ -73,7 +73,7 @@ namespace c_sharp_appium_specflow.Tests
             // Compare the initial and final screenshots
             bool colorChanged = homePage.CompareScreenshots(initialScreenshot, finalScreenshot);
 
-            // Assert or perform further actions based on the color change result
+            // Assert the color change result
             Assert.That(colorChanged, Is.True, "Color did not change");
         }
 

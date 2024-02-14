@@ -1,8 +1,8 @@
 ﻿using System;
-using c_sharp_appium_specflow.Drivers;
+using c_sharp_appium_specflow;
 using TechTalk.SpecFlow;
 
-namespace c_sharp_appium_specflow.Hooks
+namespace c_sharp_appium_specflow
 {
 
     [Binding]
